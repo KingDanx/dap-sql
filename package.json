@@ -2,7 +2,7 @@
   "name": "dap-sql.js",
   "module": "models/dapSQL.js",
   "type": "module",
-  "version": "1.0.1 (2025.07.31)",
+  "version": "1.0.2 (2025.07.31)",
   "devDependencies": {
     "@types/bun": "latest"
   },

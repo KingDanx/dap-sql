@@ -1,10 +1,17 @@
 export default class dapSQL {
+  static credentials = new Map([
+    ["server", ""],
+    ["port", ""],
+    ["name", ""],
+    ["user", ""],
+    ["password", ""],
+  ]);
   /**
    *
-   * @param {String} driver
+   * @param {string} driver
    * @param {Map<string,string>} credentials
    */
-  constructor(credentials = new Map(), driver = process.env.DB_DRIVER) {
+  constructor(credentials = dapSQL.credentials, driver = process.env.DB_DRIVER) {
     this.credentials = credentials;
     this.driver = driver;
   }
@@ -17,7 +24,7 @@ export default class dapSQL {
 
   /**
    *
-   * @param {String} driver
+   * @param {string} driver
    */
   setDriver(driver) {
     this.driver = driver;
@@ -25,7 +32,7 @@ export default class dapSQL {
 
   /**
    *
-   * @param {Map(<String,String>)} credentials
+   * @param {Map(<string,string>)} credentials
    */
   setCredentials(credentials) {
     this.credentials = credentials;

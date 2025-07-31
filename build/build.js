@@ -13,6 +13,7 @@ if (!json.version) {
  * @param {string} version
  */
 function bumpVersion(version) {
+    console.log(version)
   if (isNaN(version)) {
     throw new Error("version provided is not a number");
   }
@@ -89,7 +90,7 @@ try {
 
       break;
     case values.build:
-      const newBuild = bumpVersion(build);
+      const newBuild = bumpVersion(build.slice(0, build.indexOf(" ")).trim());
       console.log(newBuild);
       json.version = `${major}.${minor}.${newBuild} ${versionDateString}`;
       await writeToJSON();

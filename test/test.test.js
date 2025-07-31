@@ -9,15 +9,14 @@ mssqlCreds.set("user", "sa");
 mssqlCreds.set("password", "@ssword");
 mssqlCreds.set("name", "sql_srv");
 
-pgsqlCreds.set("server", "127.0.0.1");
-pgsqlCreds.set("user", "postgres");
-pgsqlCreds.set("password", "@ssword");
-pgsqlCreds.set("name", "pg_srv");
-pgsqlCreds.set("port", "5432");
 
 const mssql = new MSSQL(mssqlCreds, process.env.DB_DRIVER);
-const pgsql = new PGSQL(pgsqlCreds);
+const pgsql = new PGSQL();
 
+console.log(mssql.credentials);
+console.log(pgsql.credentials);
+
+/*
 await mssql.connect();
 await pgsql.connect();
 
@@ -36,3 +35,4 @@ await pgsql.connect();
   );
   console.log(rows);
 })();
+*/
