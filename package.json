@@ -1,6 +1,6 @@
 {
-  "name": "sql.js",
-  "module": "models/SQL.js",
+  "name": "dap-sql.js",
+  "module": "models/dapSQL.js",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest"

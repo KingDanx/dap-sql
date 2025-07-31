@@ -1,7 +1,7 @@
-import SQL from "./SQL";
+import dapSQL from "./dapSQL.js";
 import PG from "pg";
 
-export default class PGSQL extends SQL {
+export default class PGSQL extends dapSQL {
   /**
    *
    * @param {Map<string,string} credentials

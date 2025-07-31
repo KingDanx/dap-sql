@@ -1,7 +1,7 @@
-import SQL from "./SQL";
+import dapSQL from "./dapSQL.js";
 import sql from "mssql/msnodesqlv8.js";
 
-export default class MSSQL extends SQL {
+export default class MSSQL extends dapSQL {
     /**
      * 
      * @param {Map<string,string>} credentials 

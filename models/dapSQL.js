@@ -1,4 +1,4 @@
-export default class SQL {
+export default class dapSQL {
   /**
    *
    * @param {String} driver
