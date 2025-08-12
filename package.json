@@ -1,8 +1,12 @@
 {
   "name": "dap-sql.js",
   "module": "models/dapSQL.js",
+  "main": "models/dapSQL.js",
+  "version": "1.0.3",
   "type": "module",
-  "version": "1.0.2 (2025.07.31)",
+  "scripts": {
+    "build": "bun ./build/build.js"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -13,5 +17,6 @@
     "msnodesqlv8": "^5.1.1",
     "mssql": "^11.0.1",
     "pg": "^8.16.3"
-  }
+  },
+  "date": "2025.08.12"
 }

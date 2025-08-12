@@ -1,5 +1,6 @@
 import { parseArgs } from "util";
 import fs from "fs/promises";
+import path from "path";
 import json from "../package.json";
 
 if (!json.version) {
@@ -13,7 +14,6 @@ if (!json.version) {
  * @param {string} version
  */
 function bumpVersion(version) {
-    console.log(version)
   if (isNaN(version)) {
     throw new Error("version provided is not a number");
   }
@@ -24,16 +24,37 @@ function bumpVersion(version) {
 
 async function writeToJSON() {
   try {
-    await fs.writeFile("../package.json", JSON.stringify(json, null, 2));
+    await fs.writeFile(
+      path.join(import.meta.dir, "..", "package.json"),
+      JSON.stringify(json, null, 2)
+    );
     console.log("version successfully updated to:", json.version);
   } catch (e) {
     console.error(e);
   }
 }
 
+/**
+ * @param {string} - dirPath - path to directory
+ * @returns {Promise<string[]>} - Array of .js files
+ */
+async function getModels(dirPath) {
+  try {
+    const files = await fs.readdir(dirPath);
+    return files
+      .filter((file) => file.endsWith(".js"))
+      .map((file) => path.join(dirPath, file));
+  } catch (error) {
+    console.error(`Error reading directory ${dirPath}:`, error);
+    return [];
+  }
+}
+
 try {
-  const output = await Bun.build({
-    entrypoints: ["../models/MSSQL.js", "../models/PGSQL.js"],
+  const modelPath = path.join(import.meta.dirname, "..", "models");
+  const models = await getModels(modelPath);
+  await Bun.build({
+    entrypoints: models,
     outdir: "./dist",
     minify: true,
     target: "node",
@@ -75,24 +96,26 @@ try {
     day = `0${day}`;
   }
 
-  const versionDateString = `(${year}.${month}.${day})`;
+  const versionDateString = `${year}.${month}.${day}`;
 
   switch (true) {
     case values.major:
       const newMajor = bumpVersion(major);
-      json.version = `${newMajor}.${minor}.${build} ${versionDateString}`;
+      json.version = `${newMajor}.${minor}.${build}`;
+      json.date = versionDateString;
       await writeToJSON();
       break;
     case values.minor:
       const newMinor = bumpVersion(minor);
-      json.version = `${major}.${newMinor}.${build} ${versionDateString}`;
+      json.version = `${major}.${newMinor}.${build}`;
+      json.date = versionDateString;
       await writeToJSON();
 
       break;
     case values.build:
-      const newBuild = bumpVersion(build.slice(0, build.indexOf(" ")).trim());
-      console.log(newBuild);
-      json.version = `${major}.${minor}.${newBuild} ${versionDateString}`;
+      const newBuild = bumpVersion(build);
+      json.version = `${major}.${minor}.${newBuild}`;
+      json.date = versionDateString;
       await writeToJSON();
       break;
     default:

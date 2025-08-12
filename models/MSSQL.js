@@ -1,21 +1,24 @@
 import dapSQL from "./dapSQL.js";
 import sql from "mssql/msnodesqlv8.js";
 
+/**
+ * @class - Provides connect, disconnect, and query methods for SQL Server databases using mssql
+ * @constructor
+ * @param {Map<string,string>} credentials
+ * @param {string} driver
+ * @property {sql.ConnectionPool|null} db
+ */
 export default class MSSQL extends dapSQL {
-    /**
-     * 
-     * @param {Map<string,string>} credentials 
-     * @param {string} driver 
-     */
   constructor(credentials, driver) {
     super(credentials, driver);
-    this.db;
   }
+
+  db = null;
 
   /**
    * Establishes a connection to the database using provided credentials.
    *
-   * @param {Map<string, string>} credentials - A map containing database connection details.
+   * @param {Map<string, string>} credentials A map containing database connection details.
    * @returns {sql.ConnectionPool | Error} Returns a Pool instance if successful, otherwise an Error.
    */
   async connect() {
