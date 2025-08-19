@@ -1,8 +1,8 @@
 {
   "name": "dap-sql.js",
   "module": "models/dapSQL.js",
-  "main": "models/dapSQL.js",
-  "version": "1.0.4",
+  "main": "index.js",
+  "version": "1.0.6",
   "type": "module",
   "scripts": {
     "build": "bun ./build/build.js"
