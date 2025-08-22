@@ -3,8 +3,8 @@ import PG from "pg";
 
 /**
  * @class - Provides connect, disconnect, and query methods for PostgreSQL databases using pgsql
- * @constructor 
- * @param {Map<string,string>} credentials 
+ * @constructor
+ * @param {Map<string,string>} credentials
  * @param {string} driver
  * @property {PG.Pool|null} db
  */
@@ -12,36 +12,39 @@ export default class PGSQL extends dapSQL {
   constructor(credentials) {
     super(credentials);
   }
-  
+
   db = null;
 
   /**
-   * 
-   * @returns {Promise<PG.Pool|Error>} This only returns a promise to keep the overall syntax normalized
+   * @returns {Promise<PG.Pool|Error>}
    */
   async connect() {
-    return new Promise((resolve, reject) => {
-      try {
-        const db = new PG.Pool({
-          user: this.credentials.get("user"),
-          password: this.credentials.get("password"),
-          host: this.credentials.get("server"),
-          port: parseInt(this.credentials.get("port")),
-          database: this.credentials.get("name"),
-        });
-        this.db = db;
-        resolve(this.db);
-      } catch (e) {
-        console.error(e);
-        reject(e);
-      }
-    });
+    try {
+      const timeout = setTimeout(() => {
+        throw new Error("failed to connect to the database");
+      }, 3_000);
+      const db = new PG.Pool({
+        user: this.credentials.get("user"),
+        password: this.credentials.get("password"),
+        host: this.credentials.get("server"),
+        port: parseInt(this.credentials.get("port")),
+        database: this.credentials.get("name"),
+      });
+      await db.connect();
+      clearTimeout(timeout);
+      this.db = db;
+      return this.db;
+    } catch (e) {
+      console.error(e);
+      return e;
+    }
   }
 
   async disconnect() {
     if (this.db) {
-      void (await this.db.end());
+      return void (await this.db.end());
     }
+    return;
   }
 
   /**
